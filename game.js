@@ -51,6 +51,7 @@ rightButton.addEventListener('mouseup', () => {
     movingRight = false;
 });
 
+// Для мобильных устройств
 leftButton.addEventListener('touchstart', () => {
     movingLeft = true;
 });
