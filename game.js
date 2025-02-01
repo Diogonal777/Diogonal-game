@@ -1,4 +1,4 @@
-// Инициализация холста и контекста
+// Настройка канваса
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -6,45 +6,51 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// Переменные для корабля
-let shipWidth = 50;
-let shipHeight = 50;
-let shipX = canvas.width / 2 - shipWidth / 2;
-let shipY = canvas.height - shipHeight - 10;
-let shipSpeed = 7;
+let shipX = canvas.width / 2;
+let shipY = canvas.height - 100;
+let shipWidth = canvas.width * 0.1;
+let shipHeight = canvas.height * 0.1;
+let shipSpeed = canvas.width * 0.02;
 
-// Массив для метеоритов
 let meteors = [];
+let score = 0;
+let gameOver = false;
 
-// Класс для метеоритов
+const leftButton = document.getElementById('leftButton');
+const rightButton = document.getElementById('rightButton');
+
+// Управление кораблем с помощью кнопок
+leftButton.addEventListener('click', () => {
+    if (shipX > 0) shipX -= shipSpeed;
+});
+
+rightButton.addEventListener('click', () => {
+    if (shipX < canvas.width - shipWidth) shipX += shipSpeed;
+});
+
+// Класс метеоритов
 class Meteor {
-    constructor(x, y, radius) {
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-        this.speed = 3; // Скорость падения
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = -50;
+        this.radius = canvas.width * 0.05;
+        this.speed = 3;
     }
 
-    // Метод для рисования метеорита
-    draw(ctx) {
+    draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'gray';
+        ctx.fillStyle = 'red';
         ctx.fill();
         ctx.closePath();
     }
 
-    // Метод для обновления положения метеорита
     update() {
-        this.y += this.speed; // Падение вниз
+        this.y += this.speed;
+        if (this.y > canvas.height) {
+            meteors.splice(meteors.indexOf(this), 1);
+        }
     }
-}
-
-// Функция для создания метеоритов
-function createMeteor() {
-    let x = Math.random() * canvas.width; // Случайное положение по оси X
-    let radius = Math.random() * 20 + 10; // Случайный радиус метеорита
-    meteors.push(new Meteor(x, -radius, radius)); // Добавляем метеорит в список
 }
 
 // Рисуем корабль
@@ -56,70 +62,57 @@ function drawShip() {
     ctx.closePath();
 }
 
-// Основной цикл отрисовки
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Очищаем холст
-
-    // Рисуем корабль
-    drawShip();
-
-    // Рисуем и обновляем метеориты
-    for (let i = 0; i < meteors.length; i++) {
-        meteors[i].draw(ctx);
-        meteors[i].update();
-    }
+// Рисуем все метеориты
+function drawMeteors() {
+    meteors.forEach(meteor => {
+        meteor.draw();
+    });
 }
 
-// Обновление игрового состояния
-function update() {
-    // Проверка столкновений
-    for (let i = 0; i < meteors.length; i++) {
-        if (checkCollision(meteors[i])) {
-            alert('Game Over!');
-            resetGame();
-            return;
+// Проверка на столкновение
+function checkCollision() {
+    meteors.forEach(meteor => {
+        const dx = meteor.x - shipX - shipWidth / 2;
+        const dy = meteor.y - shipY - shipHeight / 2;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < meteor.radius + shipWidth / 2) {
+            gameOver = true;
         }
+    });
+}
+
+// Обновление игры
+function updateGame() {
+    if (gameOver) {
+        ctx.font = '50px Arial';
+        ctx.fillStyle = 'red';
+        ctx.fillText('GAME OVER', canvas.width / 2 - 150, canvas.height / 2);
+        return;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawShip();
+    drawMeteors();
+
+    meteors.forEach(meteor => {
+        meteor.update();
+    });
+
+    checkCollision();
+}
+
+// Создание метеоритов
+function createMeteor() {
+    if (!gameOver) {
+        const meteor = new Meteor();
+        meteors.push(meteor);
     }
 }
 
-// Проверка столкновения между кораблем и метеоритом
-function checkCollision(meteor) {
-    // Проверка на пересечение прямоугольника (корабль) с кругом (метеорит)
-    let dx = meteor.x - (shipX + shipWidth / 2);
-    let dy = meteor.y - (shipY + shipHeight / 2);
-    let distance = Math.sqrt(dx * dx + dy * dy);
-    return distance < meteor.radius + shipWidth / 2;
-}
+// Добавление метеоритов каждые 1.5 секунды
+setInterval(createMeteor, 1500);
 
-// Сброс игры
-function resetGame() {
-    // Очистка списка метеоритов
-    meteors = [];
-    // Перемещение корабля в начальное положение
-    shipX = canvas.width / 2 - shipWidth / 2;
-    shipY = canvas.height - shipHeight - 10;
-}
-
-// Управление кораблем
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft' && shipX > 0) {
-        shipX -= shipSpeed; // Двигаем влево
-    }
-    if (e.key === 'ArrowRight' && shipX < canvas.width - shipWidth) {
-        shipX += shipSpeed; // Двигаем вправо
-    }
-});
-
-// Основной игровой цикл
-function gameLoop() {
-    draw();
-    update();
-    requestAnimationFrame(gameLoop);
-}
-
-// Запуск игрового цикла
-gameLoop();
-
-// Создание метеоритов каждые 2 секунды
-setInterval(createMeteor, 2000);
- 
+// Обновление игры каждую 1/60 секунды
+setInterval(updateGame, 1000 / 60);
