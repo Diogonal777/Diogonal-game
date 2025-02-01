@@ -51,6 +51,22 @@ rightButton.addEventListener('mouseup', () => {
     movingRight = false;
 });
 
+leftButton.addEventListener('touchstart', () => {
+    movingLeft = true;
+});
+
+leftButton.addEventListener('touchend', () => {
+    movingLeft = false;
+});
+
+rightButton.addEventListener('touchstart', () => {
+    movingRight = true;
+});
+
+rightButton.addEventListener('touchend', () => {
+    movingRight = false;
+});
+
 // Класс метеоритов
 class Meteor {
     constructor() {
