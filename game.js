@@ -39,5 +39,3 @@ function gameLoop() {
 }
 
 gameLoop();
-
-
