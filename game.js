@@ -2,10 +2,11 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Размеры канваса
+// Настройка размеров канваса
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// Начальные параметры
 let shipX = canvas.width / 2;
 let shipY = canvas.height - 100;
 let shipWidth = canvas.width * 0.1;
@@ -19,13 +20,17 @@ let gameOver = false;
 const leftButton = document.getElementById('leftButton');
 const rightButton = document.getElementById('rightButton');
 
+// Переменные для плавного перемещения
+let targetX = shipX; // Цель для движения корабля
+const movementSpeed = canvas.width * 0.05; // Скорость движения
+
 // Управление кораблем с помощью кнопок
 leftButton.addEventListener('click', () => {
-    if (shipX > 0) shipX -= shipSpeed;
+    targetX = Math.max(0, shipX - shipSpeed);  // Ограничаем движение слева
 });
 
 rightButton.addEventListener('click', () => {
-    if (shipX < canvas.width - shipWidth) shipX += shipSpeed;
+    targetX = Math.min(canvas.width - shipWidth, shipX + shipSpeed);  // Ограничаем движение справа
 });
 
 // Класс метеоритов
@@ -93,6 +98,9 @@ function updateGame() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Плавное перемещение корабля
+    shipX += (targetX - shipX) * 0.1; // Интерполяция для плавного движения
+
     drawShip();
     drawMeteors();
 
@@ -116,3 +124,4 @@ setInterval(createMeteor, 1500);
 
 // Обновление игры каждую 1/60 секунды
 setInterval(updateGame, 1000 / 60);
+ 
