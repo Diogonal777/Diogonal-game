@@ -15,6 +15,40 @@ const ship = {
     color: "blue"
 };
 
+// Класс для метеоритов
+class Meteor {
+    constructor(x, y, radius) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.speed = 3; // Скорость падения
+    }
+
+    // Метод для рисования метеорита
+    draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'gray';
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    // Метод для обновления положения метеорита
+    update() {
+        this.y += this.speed; // Падение вниз
+    }
+}
+
+// Список метеоритов
+let meteors = [];
+
+// Функция для создания нового метеорита
+function createMeteor() {
+    let x = Math.random() * canvas.width; // Случайное положение по оси X
+    let radius = Math.random() * 20 + 10; // Случайный радиус метеорита
+    meteors.push(new Meteor(x, -radius, radius)); // Добавляем метеорит в список
+}
+
 // Функция отрисовки корабля
 function drawShip() {
     ctx.fillStyle = ship.color;
