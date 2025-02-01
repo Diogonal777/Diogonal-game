@@ -1,37 +1,43 @@
-var config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+// Настройка размера
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Игровой корабль
+const ship = {
+    x: canvas.width / 2 - 25,
+    y: canvas.height - 80,
+    width: 50,
+    height: 50,
+    speed: 10,
+    color: "blue"
 };
 
-var player;
-
-var game = new Phaser.Game(config);
-
-function preload() {
-    this.load.image('player', 'https://example.com/player.png'); // Замените на свой спрайт
+// Функция отрисовки корабля
+function drawShip() {
+    ctx.fillStyle = ship.color;
+    ctx.fillRect(ship.x, ship.y, ship.width, ship.height);
 }
 
-function create() {
-    player = this.physics.add.image(400, 300, 'player');
-}
-
-function update() {
-    if (this.input.keyboard.isDown(Phaser.Input.Keyboard.KeyCodes.LEFT)) {
-        player.x -= 5;
-    } else if (this.input.keyboard.isDown(Phaser.Input.Keyboard.KeyCodes.RIGHT)) {
-        player.x += 5;
+// Управление кораблём
+window.addEventListener("keydown", function(event) {
+    if (event.key === "ArrowLeft" && ship.x > 0) {
+        ship.x -= ship.speed;
     }
-
-    if (this.input.keyboard.isDown(Phaser.Input.Keyboard.KeyCodes.UP)) {
-        player.y -= 5;
-    } else if (this.input.keyboard.isDown(Phaser.Input.Keyboard.KeyCodes.DOWN)) {
-        player.y += 5;
+    if (event.key === "ArrowRight" && ship.x < canvas.width - ship.width) {
+        ship.x += ship.speed;
     }
+});
+
+// Основной игровой цикл
+function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawShip();
+    requestAnimationFrame(gameLoop);
 }
+
+gameLoop();
+
 
