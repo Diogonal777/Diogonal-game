@@ -24,13 +24,31 @@ const rightButton = document.getElementById('rightButton');
 let targetX = shipX; // Цель для движения корабля
 const movementSpeed = canvas.width * 0.05; // Скорость движения
 
+// Переменные для контроля кнопок
+let movingLeft = false;
+let movingRight = false;
+
+// Уменьшаем размер кнопок для мобильных устройств
+leftButton.style.width = '20vw';
+rightButton.style.width = '20vw';
+leftButton.style.height = '10vh';
+rightButton.style.height = '10vh';
+
 // Управление кораблем с помощью кнопок
-leftButton.addEventListener('click', () => {
-    targetX = Math.max(0, shipX - shipSpeed);  // Ограничаем движение слева
+leftButton.addEventListener('mousedown', () => {
+    movingLeft = true;
 });
 
-rightButton.addEventListener('click', () => {
-    targetX = Math.min(canvas.width - shipWidth, shipX + shipSpeed);  // Ограничаем движение справа
+leftButton.addEventListener('mouseup', () => {
+    movingLeft = false;
+});
+
+rightButton.addEventListener('mousedown', () => {
+    movingRight = true;
+});
+
+rightButton.addEventListener('mouseup', () => {
+    movingRight = false;
 });
 
 // Класс метеоритов
@@ -99,6 +117,14 @@ function updateGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Плавное перемещение корабля
+    if (movingLeft) {
+        targetX = Math.max(0, shipX - shipSpeed);  // Ограничаем движение слева
+    }
+
+    if (movingRight) {
+        targetX = Math.min(canvas.width - shipWidth, shipX + shipSpeed);  // Ограничаем движение справа
+    }
+
     shipX += (targetX - shipX) * 0.1; // Интерполяция для плавного движения
 
     drawShip();
