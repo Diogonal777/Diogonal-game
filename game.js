@@ -28,11 +28,11 @@ const movementSpeed = canvas.width * 0.05; // Скорость движения
 let movingLeft = false;
 let movingRight = false;
 
-// Уменьшаем размер кнопок для мобильных устройств
-leftButton.style.width = '20vw';
-rightButton.style.width = '20vw';
-leftButton.style.height = '10vh';
-rightButton.style.height = '10vh';
+// Устанавливаем фиксированные размеры кнопок
+leftButton.style.width = '100px';
+rightButton.style.width = '100px';
+leftButton.style.height = '50px';
+rightButton.style.height = '50px';
 
 // Управление кораблем с помощью кнопок
 leftButton.addEventListener('mousedown', () => {
@@ -150,4 +150,3 @@ setInterval(createMeteor, 1500);
 
 // Обновление игры каждую 1/60 секунды
 setInterval(updateGame, 1000 / 60);
- 
