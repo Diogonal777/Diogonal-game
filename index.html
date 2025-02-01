@@ -8,60 +8,41 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #000;
             overflow: hidden;
+            background-color: black;
         }
-
-        /* Канвас, который будет занимать весь экран */
         #gameCanvas {
             display: block;
-            margin: 0 auto;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            background-color: black;
         }
-
-        /* Кнопки управления */
-        .controls {
+        /* Стиль кнопок */
+        .control-btn {
             position: absolute;
-            bottom: 30px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20px;
-            z-index: 1;
-        }
-
-        button {
-            padding: 15px;
-            background-color: #00f;
-            color: white;
+            width: 100px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.7);
             border: none;
-            font-size: 18px;
+            font-size: 20px;
+            color: black;
             cursor: pointer;
-            width: 40%;
         }
-
-        button:hover {
-            background-color: #0055ff;
+        #leftButton {
+            bottom: 10%;
+            left: 10%;
         }
-
+        #rightButton {
+            bottom: 10%;
+            right: 10%;
+        }
     </style>
 </head>
 <body>
+    <canvas id="gameCanvas"></canvas>
+    <!-- Кнопки для управления -->
+    <button id="leftButton" class="control-btn">Left</button>
+    <button id="rightButton" class="control-btn">Right</button>
 
-<canvas id="gameCanvas"></canvas>
-
-<!-- Контролы для мобильных -->
-<div class="controls">
-    <button id="leftButton">Left</button>
-    <button id="rightButton">Right</button>
-</div>
-
-<script src="game.js"></script>
-
+    <script src="game.js"></script>
 </body>
 </html>
  
