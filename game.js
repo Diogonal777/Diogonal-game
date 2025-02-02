@@ -21,7 +21,6 @@ document.getElementById("rightButton").addEventListener("mouseup", () => ship.mo
 document.getElementById("rightButton").addEventListener("mouseleave", () => ship.movingRight = false);
 
   let score = 0;
-  let score = 0;
   let highScore = localStorage.getItem("highScore") || 0; // Загружаем рекорд
 
     function resizeCanvas() {
