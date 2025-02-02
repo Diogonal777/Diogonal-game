@@ -11,15 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Загрузка изображений
     const shipImage = new Image();
-    shipImage.src = "images/ship.png";  // Путь к изображению корабля
+    shipImage.src = "images/ship.png";  
 
     const meteorImage = new Image();
-    meteorImage.src = "images/meteor.png";  // Путь к изображению метеорита
+    meteorImage.src = "images/meteor.png";  
+
+    let gameSpeed = 1; // Начальная скорость игры (1 = нормальная, < 1 = замедление)
 
     // Корабль
     const ship = {
-        width: canvas.width * 0.12, // 12% от ширины экрана
-        height: (canvas.width * 0.12) * (3 / 4), // Соотношение 4:3
+        width: canvas.width * 0.12,
+        height: (canvas.width * 0.12) * (3 / 4),
         x: canvas.width / 2 - (canvas.width * 0.06),
         y: canvas.height * 0.8,
         speed: canvas.width * 0.01,
@@ -30,17 +32,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Метеориты
     const meteors = [];
     function createMeteor() {
-        const size = canvas.width * 0.08; // Размер метеорита
+        const size = canvas.width * 0.08;
         meteors.push({
             x: Math.random() * (canvas.width - size),
             y: -size,
             width: size,
             height: size,
-            speed: canvas.height * 0.005 + Math.random() * 2
+            speed: (canvas.height * 0.005 + Math.random() * 2) * gameSpeed
         });
     }
 
-    setInterval(createMeteor, 1000); // Создаём метеориты каждую секунду
+    setInterval(createMeteor, 1000); 
 
     // Обработчики касаний
     document.getElementById("leftButton").addEventListener("touchstart", () => ship.movingLeft = true);
@@ -51,20 +53,19 @@ document.addEventListener("DOMContentLoaded", () => {
     function update() {
         // Движение корабля
         if (ship.movingLeft && ship.x > 0) {
-            ship.x -= ship.speed;
+            ship.x -= ship.speed * gameSpeed;
         }
         if (ship.movingRight && ship.x + ship.width < canvas.width) {
-            ship.x += ship.speed;
+            ship.x += ship.speed * gameSpeed;
         }
 
         // Движение метеоритов
         for (let i = 0; i < meteors.length; i++) {
-            meteors[i].y += meteors[i].speed;
+            meteors[i].y += meteors[i].speed * gameSpeed;
 
             // Проверка столкновения
             if (checkCollision(ship, meteors[i])) {
                 showGameOver();
-                return; // Останавливаем игру после столкновения
             }
 
             // Удаляем метеориты, вышедшие за экран
@@ -109,8 +110,8 @@ document.addEventListener("DOMContentLoaded", () => {
         gameOverText.style.textShadow = "2px 2px 5px black";
         document.body.appendChild(gameOverText);
 
-        // Останавливаем анимацию
-        cancelAnimationFrame(gameLoopId);
+        // Замедляем игру после столкновения
+        gameSpeed = 0.2;
 
         // Добавляем обработчик клика для перезапуска игры
         document.body.addEventListener("click", function restartGame() {
@@ -118,12 +119,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }, { once: true });
     }
 
-    let gameLoopId;
     function gameLoop() {
         update();
         draw();
-        gameLoopId = requestAnimationFrame(gameLoop);
+        requestAnimationFrame(gameLoop);
     }
 
     gameLoop();
 });
+ 
