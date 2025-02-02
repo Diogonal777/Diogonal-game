@@ -65,18 +65,23 @@ document.addEventListener("DOMContentLoaded", () => {
             if (checkCollision(ship, meteors[i])) {
                 function showGameOver() {
     let gameOverText = document.createElement("div");
-    gameOverText.innerText = "GAME OVER";
+    gameOverText.innerText = "GAME OVER\nTap to Restart";
     gameOverText.style.position = "absolute";
     gameOverText.style.top = "50%";
     gameOverText.style.left = "50%";
     gameOverText.style.transform = "translate(-50%, -50%)";
     gameOverText.style.fontSize = "5vw";
-    gameOverText.style.color = "red";
+    gameOverText.style.color = "white";
     gameOverText.style.fontFamily = "Arial, sans-serif";
     gameOverText.style.fontWeight = "bold";
     gameOverText.style.textAlign = "center";
     gameOverText.style.textShadow = "2px 2px 5px black";
     document.body.appendChild(gameOverText);
+
+    // Добавляем обработчик клика для перезапуска игры
+    document.body.addEventListener("click", function restartGame() {
+        location.reload();
+    }, { once: true }); // { once: true } позволяет выполнить обработчик только один раз
 }
 
 // Вызываем вместо alert
