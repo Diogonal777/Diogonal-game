@@ -35,8 +35,8 @@ canvas {
 
 /* Кнопки управления */
 .control-btn {
-    width: 40%; /* Ширина каждой кнопки */
-    height: 7vh; /* 7% от высоты экрана */
+    width: 40%; /* Ширина каждой кнопки относительно контейнера */
+    height: 15vh; /* Фиксированная высота кнопок */
     background-color: rgba(255, 255, 255, 0.7);
     border: none;
     font-size: 2.5vh; /* Размер текста */
@@ -44,6 +44,8 @@ canvas {
     cursor: pointer;
     user-select: none;
     border-radius: 10px;
+    text-align: center;
+    line-height: 15vh; /* Центрируем текст по вертикали */
 }
 
 /* Убираем эффект приближения на мобильных устройствах */ 
