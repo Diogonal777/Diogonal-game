@@ -20,6 +20,8 @@ document.getElementById("rightButton").addEventListener("mousedown", () => ship.
 document.getElementById("rightButton").addEventListener("mouseup", () => ship.movingRight = false);
 document.getElementById("rightButton").addEventListener("mouseleave", () => ship.movingRight = false);
 
+  let score = 0;
+
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -90,12 +92,18 @@ document.getElementById("rightButton").addEventListener("mouseleave", () => ship
             if (meteors[i].y > canvas.height) {
                 meteors.splice(i, 1);
                 i--;
+                score += 1; // Увеличиваем счёт
             }
         }
     }
 
     function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+       // Рисуем очки
+       ctx.fillStyle = "white";
+       ctx.font = "3vw Arial";
+       ctx.fillText("Score: " + score, 20, 50);
 
         // Рисуем корабль
         ctx.drawImage(shipImage, ship.x, ship.y, ship.width, ship.height);
