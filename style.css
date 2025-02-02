@@ -2,9 +2,24 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    user-select: none; /* Запрещает выделение текста */
+    user-select: none;
 }
 
+body {
+    background: url('images/background.png') repeat-y center top;
+    background-size: cover;
+    margin: 0;
+    overflow: hidden;
+}
+
+canvas {
+    display: block;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Меню */
 #menu {
     position: absolute;
     top: 50%;
@@ -21,56 +36,33 @@
     cursor: pointer;
 }
 
-body {
-    background: url('images/background.png') repeat-y center top;
-    background-size: cover;
-    overflow: hidden;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-}
-
-/* Канвас для игры */
-canvas {
-    display: block;
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-}
-
-/* Контейнер кнопок */
-#controls {
-    position: absolute;
-    bottom: 7vh; /* Увеличиваем отступ от нижнего края */
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 50vw; /* Увеличиваем расстояние между кнопками */
-}
-
 /* Кнопки управления */
-.control-button {
-    width: 14vw; /* Чуть увеличим кнопки */
-    height: 14vw;
-    max-width: 90px;
-    max-height: 90px;
-    font-size: 5vw;
-    background: rgba(255, 255, 255, 0.3);
+.control-btn {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    font-size: 20px;
+    background: rgba(255, 255, 255, 0.2);
     border: 2px solid white;
     color: white;
     border-radius: 50%;
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    line-height: 80px;
+    font-weight: bold;
     cursor: pointer;
 }
- 
 
-/* Убираем эффект приближения на мобильных устройствах */ 
+#leftButton {
+    bottom: 5vh;
+    left: 5vw;
+}
+
+#rightButton {
+    bottom: 5vh;
+    right: 5vw;
+}
+
+/* Отключение зума на мобильных устройствах */
 html, body {
     touch-action: manipulation;
 }
- 
