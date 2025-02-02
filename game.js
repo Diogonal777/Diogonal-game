@@ -12,6 +12,14 @@ document.addEventListener("keyup", (event) => {
     if (event.key === "ArrowRight") ship.movingRight = false;
 });
 
+document.getElementById("leftButton").addEventListener("mousedown", () => ship.movingLeft = true);
+document.getElementById("leftButton").addEventListener("mouseup", () => ship.movingLeft = false);
+document.getElementById("leftButton").addEventListener("mouseleave", () => ship.movingLeft = false);
+
+document.getElementById("rightButton").addEventListener("mousedown", () => ship.movingRight = true);
+document.getElementById("rightButton").addEventListener("mouseup", () => ship.movingRight = false);
+document.getElementById("rightButton").addEventListener("mouseleave", () => ship.movingRight = false);
+
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
