@@ -9,21 +9,18 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
-    // Загрузка изображений
+    let gameStarted = false;
+    let gameOver = false;
+    let score = 0;
+    let highScore = localStorage.getItem("highScore") || 0;
+    let slowMotionFactor = 1; 
+
     const shipImage = new Image();
     shipImage.src = "images/ship.png";
 
     const meteorImage = new Image();
     meteorImage.src = "images/meteor.png";
 
-    let gameStarted = false;
-
-    document.getElementById("startButton").addEventListener("click", () => {
-    document.getElementById("menu").style.display = "none"; // Скрываем меню
-    gameStarted = true;
-});
-
-    // Корабль
     const ship = {
         width: canvas.width * 0.12,
         height: (canvas.width * 0.12) * (3 / 4),
@@ -34,51 +31,48 @@ document.addEventListener("DOMContentLoaded", () => {
         movingRight: false
     };
 
-    // Метеориты
     const meteors = [];
     function createMeteor() {
-        const size = canvas.width * (0.05 + Math.random() * 0.06);
+        const size = (Math.random() * 0.05 + 0.05) * canvas.width; // Разный размер
         meteors.push({
             x: Math.random() * (canvas.width - size),
             y: -size,
             width: size,
             height: size,
-            speed: (canvas.height * 0.005 + Math.random() * 2) * (1 + score * 0.02)
-
+            speed: (canvas.height * 0.005 + Math.random() * 2) * (1 + score / 100) // Ускорение со временем
         });
     }
 
     setInterval(createMeteor, 1000);
 
-    // Управление
+    document.getElementById("startButton").addEventListener("click", () => {
+        document.getElementById("menu").style.display = "none";
+        gameStarted = true;
+        gameLoop();
+    });
+
     document.getElementById("leftButton").addEventListener("touchstart", () => ship.movingLeft = true);
     document.getElementById("leftButton").addEventListener("touchend", () => ship.movingLeft = false);
     document.getElementById("leftButton").addEventListener("mousedown", () => ship.movingLeft = true);
     document.getElementById("leftButton").addEventListener("mouseup", () => ship.movingLeft = false);
+
     document.getElementById("rightButton").addEventListener("touchstart", () => ship.movingRight = true);
     document.getElementById("rightButton").addEventListener("touchend", () => ship.movingRight = false);
     document.getElementById("rightButton").addEventListener("mousedown", () => ship.movingRight = true);
     document.getElementById("rightButton").addEventListener("mouseup", () => ship.movingRight = false);
 
-
     document.addEventListener("keydown", (e) => {
         if (e.key === "ArrowLeft") ship.movingLeft = true;
         if (e.key === "ArrowRight") ship.movingRight = true;
     });
+
     document.addEventListener("keyup", (e) => {
         if (e.key === "ArrowLeft") ship.movingLeft = false;
         if (e.key === "ArrowRight") ship.movingRight = false;
     });
 
-    let gameOver = false;
-    let score = 0;
-    let highScore = localStorage.getItem("highScore") || 0;
-    let slowMotionFactor = 1; // Замедление всей игры (1 = обычная скорость)
-
     function update() {
-        if (gameOver) {
-            slowMotionFactor = 0.2; // При окончании игры замедляем игру
-        }
+        if (!gameStarted || gameOver) return;
 
         if (ship.movingLeft && ship.x > 0) {
             ship.x -= ship.speed * slowMotionFactor;
@@ -111,12 +105,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        ctx.drawImage(shipImage, ship.x, ship.y, ship.width, ship.height);  
-        
         for (const meteor of meteors) {
             ctx.drawImage(meteorImage, meteor.x, meteor.y, meteor.width, meteor.height);
         }
-        
+
+        ctx.drawImage(shipImage, ship.x, ship.y, ship.width, ship.height);
+
         ctx.fillStyle = "white";
         ctx.font = "20px Arial";
         ctx.fillText(`Score: ${score}`, 10, 30);
@@ -125,6 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showGameOver() {
         gameOver = true;
+        slowMotionFactor = 0.2;
+
         let gameOverText = document.createElement("div");
         gameOverText.innerText = "GAME OVER\nTap to Restart";
         gameOverText.style.position = "absolute";
@@ -134,9 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
         gameOverText.style.fontSize = "5vw";
         gameOverText.style.color = "white";
         gameOverText.style.fontFamily = "Arial, sans-serif";
-        gameOverText.style.fontWeight = "bold";
         gameOverText.style.textAlign = "center";
-        gameOverText.style.textShadow = "2px 2px 5px black";
         document.body.appendChild(gameOverText);
 
         document.body.addEventListener("click", () => location.reload(), { once: true });
@@ -150,11 +144,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function gameLoop() {
-        if (!gameStarted) return; // Если игра не началась, не обновляем кадры
         update();
         draw();
-        setTimeout(() => requestAnimationFrame(gameLoop), 1000 / 60 * slowMotionFactor);
+        requestAnimationFrame(gameLoop);
     }
-
-    gameLoop();
 });
