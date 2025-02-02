@@ -1,3 +1,4 @@
+/* Сброс стилей по умолчанию */
 * {
     margin: 0;
     padding: 0;
@@ -5,14 +6,15 @@
     user-select: none; /* Запрещает выделение текста */
 }
 
+/* Фон */
 body {
-    background: url('https://raw.githubusercontent.com/diogonal777/Diogonal-site/main/images/background.png
-') repeat-y center top;
+    background: url('images/background.png') repeat-y center top;
     background-size: cover;
     margin: 0;
     overflow: hidden;
 }
 
+/* Канвас */
 canvas {
     display: block;
     position: absolute;
@@ -31,21 +33,20 @@ canvas {
 }
 
 /* Кнопки управления */
-.control-button {
-    width: 80px;
-    height: 80px;
-    font-size: 20px;
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid white;
-    color: white;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 80px;
-    font-weight: bold;
+.control-btn {
+    width: 15vw; /* 15% ширины экрана */
+    height: 7vh; /* 7% высоты экрана */
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    font-size: 2.5vh; /* Размер текста зависит от высоты экрана */
+    color: black;
     cursor: pointer;
+    user-select: none;
+    border-radius: 10px;
 }
 
-/* Убираем эффект приближения на мобильных устройствах */
+/* Убираем эффект приближения на мобильных устройствах */ 
 html, body {
     touch-action: manipulation;
 }
+ 
