@@ -63,7 +63,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Проверка столкновения
             if (checkCollision(ship, meteors[i])) {
-                alert("Game Over!");
+                function showGameOver() {
+    let gameOverText = document.createElement("div");
+    gameOverText.innerText = "GAME OVER";
+    gameOverText.style.position = "absolute";
+    gameOverText.style.top = "50%";
+    gameOverText.style.left = "50%";
+    gameOverText.style.transform = "translate(-50%, -50%)";
+    gameOverText.style.fontSize = "5vw";
+    gameOverText.style.color = "red";
+    gameOverText.style.fontFamily = "Arial, sans-serif";
+    gameOverText.style.fontWeight = "bold";
+    gameOverText.style.textAlign = "center";
+    gameOverText.style.textShadow = "2px 2px 5px black";
+    document.body.appendChild(gameOverText);
+}
+
+// Вызываем вместо alert
+showGameOver();
+
                 location.reload();
             }
 
