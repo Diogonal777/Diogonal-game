@@ -1,3 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none; /* Запрещает выделение текста */
+}
+
+body {
+    background: url('images/background.png') repeat-y center top;
+    background-size: cover;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+/* Канвас для игры */
+canvas {
+    display: block;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
+
 /* Контейнер кнопок */
 #controls {
     position: absolute;
@@ -5,23 +31,29 @@
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 3vw;
+    gap: 5vw; /* Отступ между кнопками */
 }
 
 /* Кнопки управления */
 .control-button {
-    width: 15vw; /* 15% ширины экрана */
-    height: 7vh; /* 7% высоты экрана */
-    font-size: 2.5vh; /* Размер текста зависит от высоты экрана */
-    background: rgba(255, 255, 255, 0.7);
-    border: none;
-    color: black;
-    border-radius: 10px;
+    width: 12vw; /* 12% ширины экрана */
+    height: 12vw; /* Делаем кнопки квадратными */
+    max-width: 80px;
+    max-height: 80px;
+    font-size: 4vw; /* Размер текста зависит от ширины экрана */
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid white;
+    color: white;
+    border-radius: 50%;
     text-align: center;
-    cursor: pointer;
-    user-select: none;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+}
+
+/* Убираем эффект приближения на мобильных устройствах */ 
+html, body {
+    touch-action: manipulation;
 }
  
