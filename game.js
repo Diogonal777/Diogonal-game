@@ -91,13 +91,13 @@ document.getElementById("rightButton").addEventListener("mouseleave", () => ship
             }
 
             // Удаляем метеориты, вышедшие за экран
-            if (!gameOver) {
-                 score++;
-            }
             if (meteors[i].y > canvas.height) {
                 meteors.splice(i, 1);
                 i--;
-                score += 1; // Увеличиваем счёт
+            if (!gameOver) {
+                 score++;
+            }
+                 score += 1; // Увеличиваем счёт
             }
         }
     }
