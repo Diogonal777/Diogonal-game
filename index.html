@@ -4,45 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Space Shooter Game</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            touch-action: none;
-        }
-        #gameCanvas {
-            display: block;
-        }
-        /* Улучшенный стиль кнопок */
-        .control-btn {
-            position: absolute;
-            width: 15vw; /* 15% ширины экрана */
-            height: 7vh; /* 7% высоты экрана */
-            background-color: rgba(255, 255, 255, 0.7);
-            border: none;
-            font-size: 2.5vh; /* Размер текста зависит от высоты экрана */
-            color: black;
-            cursor: pointer;
-            user-select: none;
-            border-radius: 10px;
-        }
-        #leftButton {
-            bottom: 5vh;
-            left: 5vw;
-        }
-        #rightButton {
-            bottom: 5vh;
-            right: 5vw;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="https://raw.githubusercontent.com/diogonal777/Diogonal-site/main/images/background.png
-"></div>
+    <!-- Фон -->
+    <div id="background"></div>
+    
+    <!-- Игровой холст -->
     <canvas id="gameCanvas"></canvas>
+    
+    <!-- Кнопки управления -->
     <button id="leftButton" class="control-btn">Left</button>
     <button id="rightButton" class="control-btn">Right</button>
+
     <script src="game.js"></script>
 </body>
 </html>
+ 
