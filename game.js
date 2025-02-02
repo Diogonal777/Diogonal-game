@@ -22,6 +22,7 @@ document.getElementById("rightButton").addEventListener("mouseleave", () => ship
 
   let score = 0;
   let highScore = localStorage.getItem("highScore") || 0; // Загружаем рекорд
+  let gameOver = false;
 
     function resizeCanvas() {
         canvas.width = window.innerWidth;
@@ -90,6 +91,9 @@ document.getElementById("rightButton").addEventListener("mouseleave", () => ship
             }
 
             // Удаляем метеориты, вышедшие за экран
+            if (!gameOver) {
+                 score++;
+            }
             if (meteors[i].y > canvas.height) {
                 meteors.splice(i, 1);
                 i--;
@@ -140,6 +144,8 @@ document.getElementById("rightButton").addEventListener("mouseleave", () => ship
 
         // Замедляем игру после столкновения
         gameSpeed = 0.2;
+
+        gameOver = true;
 
         if (score > highScore) {
     highScore = score;
