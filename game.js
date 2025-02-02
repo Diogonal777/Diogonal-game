@@ -30,13 +30,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Метеориты
     const meteors = [];
     function createMeteor() {
-        const size = canvas.width * 0.08;
+        const size = canvas.width * (0.05 + Math.random() * 0.06);
         meteors.push({
             x: Math.random() * (canvas.width - size),
             y: -size,
             width: size,
             height: size,
-            speed: canvas.height * 0.005 + Math.random() * 2
+            speed: (canvas.height * 0.005 + Math.random() * 2) * (1 + score * 0.02)
+
         });
     }
 
@@ -45,8 +46,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Управление
     document.getElementById("leftButton").addEventListener("touchstart", () => ship.movingLeft = true);
     document.getElementById("leftButton").addEventListener("touchend", () => ship.movingLeft = false);
+    document.getElementById("leftButton").addEventListener("mousedown", () => ship.movingLeft = true);
+    document.getElementById("leftButton").addEventListener("mouseup", () => ship.movingLeft = false);
     document.getElementById("rightButton").addEventListener("touchstart", () => ship.movingRight = true);
     document.getElementById("rightButton").addEventListener("touchend", () => ship.movingRight = false);
+    document.getElementById("rightButton").addEventListener("mousedown", () => ship.movingRight = true);
+    document.getElementById("rightButton").addEventListener("mouseup", () => ship.movingRight = false);
+
 
     document.addEventListener("keydown", (e) => {
         if (e.key === "ArrowLeft") ship.movingLeft = true;
@@ -98,16 +104,15 @@ document.addEventListener("DOMContentLoaded", () => {
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = "white";
-        ctx.font = "20px Arial";
-        ctx.fillText(`Score: ${score}`, 10, 30);
-        ctx.fillText(`High Score: ${highScore}`, 10, 60);
-
         ctx.drawImage(shipImage, ship.x, ship.y, ship.width, ship.height);
 
         for (const meteor of meteors) {
             ctx.drawImage(meteorImage, meteor.x, meteor.y, meteor.width, meteor.height);
         }
+         ctx.fillStyle = "white";
+         ctx.font = "20px Arial";
+         ctx.fillText(`Score: ${score}`, 10, 30);
+         ctx.fillText(`High Score: ${highScore}`, 10, 60); 
     }
 
     function showGameOver() {
