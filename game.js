@@ -34,6 +34,16 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const meteors = [];
+
+    startButton.addEventListener("click", startGame);
+    startButton.addEventListener("mousedown", startGame);
+    startButton.addEventListener("touchstart", startGame);
+ 
+    function startGame() {
+    menu.style.display = "none";
+    gameStarted = true;
+    gameLoop();
+    }
     function createMeteor() {
         const size = canvas.width * (0.05 + Math.random() * 0.06);
         meteors.push({
