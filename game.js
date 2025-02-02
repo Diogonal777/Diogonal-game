@@ -61,6 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("rightButton").addEventListener("mousedown", () => ship.movingRight = true);
     document.getElementById("rightButton").addEventListener("mouseup", () => ship.movingRight = false);
 
+    startButton.addEventListener("click", startGame);
+    startButton.addEventListener("touchstart", startGame);
+    
     document.addEventListener("keydown", (e) => {
         if (e.key === "ArrowLeft") ship.movingLeft = true;
         if (e.key === "ArrowRight") ship.movingRight = true;
