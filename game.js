@@ -1,31 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Получаем канвас и контекст
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
-    const menu = document.getElementById("menu");
-    const startButton = document.getElementById("startButton");
 
-    let gameStarted = false;
-    let gameOver = false;
-    let score = 0;
-    let highScore = localStorage.getItem("highScore") || 0;
-    let slowMotionFactor = 1;
-
-    // Ресайз канваса
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
-
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
+    // Загрузка изображений
     const shipImage = new Image();
     shipImage.src = "images/ship.png";
 
     const meteorImage = new Image();
     meteorImage.src = "images/meteor.png";
 
+    // Корабль
     const ship = {
         width: canvas.width * 0.12,
         height: (canvas.width * 0.12) * (3 / 4),
@@ -36,47 +27,46 @@ document.addEventListener("DOMContentLoaded", () => {
         movingRight: false
     };
 
+    // Метеориты
     const meteors = [];
     function createMeteor() {
-        const size = canvas.width * (0.05 + Math.random() * 0.06); // Разный размер метеоритов
+        const size = canvas.width * 0.08;
         meteors.push({
             x: Math.random() * (canvas.width - size),
             y: -size,
             width: size,
             height: size,
-            speed: (canvas.height * 0.005 + Math.random() * 2) * (1 + score / 50)
+            speed: canvas.height * 0.005 + Math.random() * 2
         });
     }
 
-    setInterval(() => {
-        if (gameStarted) createMeteor();
-    }, 1000);
+    setInterval(createMeteor, 1000);
 
-    // Управление кораблём
+    // Управление
     document.getElementById("leftButton").addEventListener("touchstart", () => ship.movingLeft = true);
     document.getElementById("leftButton").addEventListener("touchend", () => ship.movingLeft = false);
     document.getElementById("rightButton").addEventListener("touchstart", () => ship.movingRight = true);
     document.getElementById("rightButton").addEventListener("touchend", () => ship.movingRight = false);
-    document.getElementById("leftButton").addEventListener("mousedown", () => ship.movingLeft = true);
-    document.getElementById("leftButton").addEventListener("mouseup", () => ship.movingLeft = false);
-    document.getElementById("rightButton").addEventListener("mousedown", () => ship.movingRight = true);
-    document.getElementById("rightButton").addEventListener("mouseup", () => ship.movingRight = false);
 
     document.addEventListener("keydown", (e) => {
         if (e.key === "ArrowLeft") ship.movingLeft = true;
         if (e.key === "ArrowRight") ship.movingRight = true;
     });
-
     document.addEventListener("keyup", (e) => {
         if (e.key === "ArrowLeft") ship.movingLeft = false;
         if (e.key === "ArrowRight") ship.movingRight = false;
     });
 
-    // Функция обновления игры
-    function update() {
-        if (gameOver) return;
+    let gameOver = false;
+    let score = 0;
+    let highScore = localStorage.getItem("highScore") || 0;
+    let slowMotionFactor = 1; // Замедление всей игры (1 = обычная скорость)
 
-        // Движение корабля
+    function update() {
+        if (gameOver) {
+            slowMotionFactor = 0.2; // При окончании игры замедляем игру
+        }
+
         if (ship.movingLeft && ship.x > 0) {
             ship.x -= ship.speed * slowMotionFactor;
         }
@@ -84,17 +74,14 @@ document.addEventListener("DOMContentLoaded", () => {
             ship.x += ship.speed * slowMotionFactor;
         }
 
-        // Движение метеоритов
         for (let i = 0; i < meteors.length; i++) {
             meteors[i].y += meteors[i].speed;
 
-            // Проверка на столкновение
             if (checkCollision(ship, meteors[i])) {
                 showGameOver();
                 return;
             }
 
-            // Удаляем метеориты, которые ушли за экран
             if (meteors[i].y > canvas.height) {
                 meteors.splice(i, 1);
                 if (!gameOver) {
@@ -108,26 +95,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Функция отрисовки
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Отрисовка метеоритов
-        for (const meteor of meteors) {
-            ctx.drawImage(meteorImage, meteor.x, meteor.y, meteor.width, meteor.height);
-        }
-
-        // Отрисовка корабля
-        ctx.drawImage(shipImage, ship.x, ship.y, ship.width, ship.height);
-
-        // Отображение счёта
         ctx.fillStyle = "white";
         ctx.font = "20px Arial";
         ctx.fillText(`Score: ${score}`, 10, 30);
         ctx.fillText(`High Score: ${highScore}`, 10, 60);
+
+        ctx.drawImage(shipImage, ship.x, ship.y, ship.width, ship.height);
+
+        for (const meteor of meteors) {
+            ctx.drawImage(meteorImage, meteor.x, meteor.y, meteor.width, meteor.height);
+        }
     }
 
-    // Функция конца игры
     function showGameOver() {
         gameOver = true;
         let gameOverText = document.createElement("div");
@@ -147,7 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.addEventListener("click", () => location.reload(), { once: true });
     }
 
-    // Функция проверки столкновения
     function checkCollision(obj1, obj2) {
         return obj1.x < obj2.x + obj2.width &&
                obj1.x + obj1.width > obj2.x &&
@@ -155,24 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
                obj1.y + obj1.height > obj2.y;
     }
 
-    // Главный игровой цикл
     function gameLoop() {
-        if (gameStarted) {
-            update();
-            draw();
-            setTimeout(() => requestAnimationFrame(gameLoop), 1000 / 60 * slowMotionFactor);
-        }
+        update();
+        draw();
+        setTimeout(() => requestAnimationFrame(gameLoop), 1000 / 60 * slowMotionFactor);
     }
 
-    // Обработчик клика по кнопке "Играть"
-    startButton.addEventListener("click", startGame);
-    startButton.addEventListener("mousedown", startGame);
-    startButton.addEventListener("touchstart", startGame);
-
-    function startGame() {
-        menu.style.display = "none";  // Скрываем меню
-        gameStarted = true;
-        gameLoop();  // Запускаем игровой цикл
-    }
+    gameLoop();
 });
-
