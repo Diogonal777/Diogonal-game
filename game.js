@@ -38,12 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
     startButton.addEventListener("click", startGame);
     startButton.addEventListener("mousedown", startGame);
     startButton.addEventListener("touchstart", startGame);
- 
+
     function startGame() {
-    menu.style.display = "none";
-    gameStarted = true;
-    gameLoop();
-    }
+       menu.style.display = "none";  // Скрываем меню
+       gameStarted = true;
+       gameLoop();  // Начинаем игру
+}
+ 
     function createMeteor() {
         const size = canvas.width * (0.05 + Math.random() * 0.06);
         meteors.push({
