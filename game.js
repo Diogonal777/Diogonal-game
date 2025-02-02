@@ -9,6 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
+    // Загружаем изображение корабля
+    const shipImage = new Image();
+    shipImage.src = "ship.png";  // Убедись, что этот файл есть в проекте
+
     // Корабль
     const ship = {
         width: canvas.width * 0.12, // 12% от ширины экрана
@@ -36,8 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "red";
-        ctx.fillRect(ship.x, ship.y, ship.width, ship.height);
+        ctx.drawImage(shipImage, ship.x, ship.y, ship.width, ship.height);
     }
 
     function gameLoop() {
