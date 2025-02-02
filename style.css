@@ -6,10 +6,9 @@
 }
 
 body {
-    background: url('./images/background.png') repeat-y center top;
+    background: url('images/background.png') repeat-y center top;
     background-size: cover;
     margin: 0;
-    overflow: hidden;
 }
 
 canvas {
