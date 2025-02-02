@@ -121,5 +121,5 @@ showGameOver();
     }
 
     gameLoop();
-});
+    };
  
