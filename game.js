@@ -21,6 +21,8 @@ document.getElementById("rightButton").addEventListener("mouseup", () => ship.mo
 document.getElementById("rightButton").addEventListener("mouseleave", () => ship.movingRight = false);
 
   let score = 0;
+  let score = 0;
+  let highScore = localStorage.getItem("highScore") || 0; // Загружаем рекорд
 
     function resizeCanvas() {
         canvas.width = window.innerWidth;
@@ -104,6 +106,7 @@ document.getElementById("rightButton").addEventListener("mouseleave", () => ship
        ctx.fillStyle = "white";
        ctx.font = "3vw Arial";
        ctx.fillText("Score: " + score, 20, 50);
+       ctx.fillText("High Score: " + highScore, 20, 100);
 
         // Рисуем корабль
         ctx.drawImage(shipImage, ship.x, ship.y, ship.width, ship.height);
@@ -139,6 +142,10 @@ document.getElementById("rightButton").addEventListener("mouseleave", () => ship
         // Замедляем игру после столкновения
         gameSpeed = 0.2;
 
+        if (score > highScore) {
+    highScore = score;
+    localStorage.setItem("highScore", highScore); // Сохраняем новый рекорд
+    }
         // Добавляем обработчик клика для перезапуска игры
         document.body.addEventListener("click", function restartGame() {
             location.reload();
