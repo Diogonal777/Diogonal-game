@@ -30,13 +30,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Метеориты
     const meteors = [];
     function createMeteor() {
-        const size = canvas.width * 0.08;
+        const size = canvas.width * (0.05 + Math.random() * 0.06);
         meteors.push({
             x: Math.random() * (canvas.width - size),
             y: -size,
             width: size,
             height: size,
-            speed: canvas.height * 0.005 + Math.random() * 2
+            speed: (canvas.height * 0.005 + Math.random() * 2) * (1 + score * 0.02)
+
         });
     }
 
