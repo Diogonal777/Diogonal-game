@@ -24,6 +24,14 @@ document.getElementById("rightButton").addEventListener("mouseleave", () => ship
   let highScore = localStorage.getItem("highScore") || 0; // Загружаем рекорд
   let gameOver = false;
 
+    function slowDownMeteors() {
+    for (let meteor of meteors) {
+        meteor.y += meteor.speed * 0.1; // Уменьшаем скорость метеоритов
+    }
+    draw(); // Перерисовываем сцену, чтобы метеориты двигались медленно
+    requestAnimationFrame(slowDownMeteors); // Продолжаем анимацию, но медленнее
+}
+
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -167,10 +175,14 @@ document.getElementById("rightButton").addEventListener("mouseleave", () => ship
     }
 
     function gameLoop() {
+    if (!gameOver) { // Если игра не окончена, продолжаем обновление
         update();
         draw();
         requestAnimationFrame(gameLoop);
+    } else {
+        slowDownMeteors(); // Замедляем метеориты после окончания игры
     }
+ }
 
     gameLoop();
 });
