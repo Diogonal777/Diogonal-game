@@ -1,13 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Получаем канвас и контекст
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const menu = document.getElementById("menu");
     const startButton = document.getElementById("startButton");
 
-    // Проверка, если кнопка существует
-    if (!startButton) {
-        console.error("Кнопка не найдена!");
-        return;
-    }
-
-    const menu = document.getElementById("menu");
     let gameStarted = false;
     let gameOver = false;
     let score = 0;
@@ -178,3 +175,4 @@ document.addEventListener("DOMContentLoaded", () => {
         gameLoop();  // Запускаем игровой цикл
     }
 });
+
