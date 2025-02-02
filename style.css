@@ -1,4 +1,3 @@
-/* Сброс стилей по умолчанию */
 * {
     margin: 0;
     padding: 0;
@@ -12,6 +11,7 @@ body {
     background-size: cover;
     margin: 0;
     overflow: hidden;
+    height: 100vh; /* Обеспечивает правильное отображение на всех экранах */
 }
 
 /* Канвас */
@@ -25,11 +25,11 @@ canvas {
 /* Контейнер кнопок */
 #controls {
     position: absolute;
-    bottom: 10px;
+    bottom: 10vh; /* Отступ от низа экрана */
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%); /* Центрируем по горизонтали */
     display: flex;
-    gap: 10px;
+    gap: 5vw; /* Отступ между кнопками */
 }
 
 /* Кнопки управления */
