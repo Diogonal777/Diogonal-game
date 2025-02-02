@@ -16,6 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const meteorImage = new Image();
     meteorImage.src = "images/meteor.png";
 
+    let gameStarted = false;
+
+    document.getElementById("startButton").addEventListener("click", () => {
+    document.getElementById("menu").style.display = "none"; // Скрываем меню
+    gameStarted = true;
+});
+
     // Корабль
     const ship = {
         width: canvas.width * 0.12,
@@ -143,6 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function gameLoop() {
+        if (!gameStarted) return; // Если игра не началась, не обновляем кадры
         update();
         draw();
         setTimeout(() => requestAnimationFrame(gameLoop), 1000 / 60 * slowMotionFactor);
