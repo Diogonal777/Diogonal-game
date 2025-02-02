@@ -1,6 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
+    
+document.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") ship.movingLeft = true;
+    if (event.key === "ArrowRight") ship.movingRight = true;
+});
+
+document.addEventListener("keyup", (event) => {
+    if (event.key === "ArrowLeft") ship.movingLeft = false;
+    if (event.key === "ArrowRight") ship.movingRight = false;
+});
 
     function resizeCanvas() {
         canvas.width = window.innerWidth;
