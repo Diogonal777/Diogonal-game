@@ -27,20 +27,20 @@ canvas {
 /* Контейнер кнопок */
 #controls {
     position: absolute;
-    bottom: 5vh;
+    bottom: 10vh; /* Увеличиваем отступ от нижнего края */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 5vw; /* Отступ между кнопками */
+    gap: 8vw; /* Увеличиваем расстояние между кнопками */
 }
 
 /* Кнопки управления */
 .control-button {
-    width: 12vw; /* 12% ширины экрана */
-    height: 12vw; /* Делаем кнопки квадратными */
-    max-width: 80px;
-    max-height: 80px;
-    font-size: 4vw; /* Размер текста зависит от ширины экрана */
+    width: 14vw; /* Чуть увеличим кнопки */
+    height: 14vw;
+    max-width: 90px;
+    max-height: 90px;
+    font-size: 5vw;
     background: rgba(255, 255, 255, 0.3);
     border: 2px solid white;
     color: white;
@@ -51,6 +51,7 @@ canvas {
     justify-content: center;
     cursor: pointer;
 }
+ 
 
 /* Убираем эффект приближения на мобильных устройствах */ 
 html, body {
