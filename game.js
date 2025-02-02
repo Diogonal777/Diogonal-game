@@ -109,11 +109,21 @@ document.addEventListener("DOMContentLoaded", () => {
         gameOverText.style.textShadow = "2px 2px 5px black";
         document.body.appendChild(gameOverText);
 
+        // Останавливаем анимацию
+        cancelAnimationFrame(gameLoopId);
+
         // Добавляем обработчик клика для перезапуска игры
         document.body.addEventListener("click", function restartGame() {
             location.reload();
-        }, );
+        }, { once: true });
     }
 
+    let gameLoopId;
+    function gameLoop() {
+        update();
+        draw();
+        gameLoopId = requestAnimationFrame(gameLoop);
+    }
+
+    gameLoop();
 });
- 
