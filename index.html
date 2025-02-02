@@ -10,41 +10,40 @@
             padding: 0;
             overflow: hidden;
             background-color: black;
-            touch-action: none; /* Отключаем жесты */
+            touch-action: none;
         }
         #gameCanvas {
             display: block;
             background-color: black;
         }
-        /* Стиль кнопок */
+        /* Улучшенный стиль кнопок */
         .control-btn {
             position: absolute;
-            width: 100px;
-            height: 50px;
+            width: 15vw; /* 15% ширины экрана */
+            height: 7vh; /* 7% высоты экрана */
             background-color: rgba(255, 255, 255, 0.7);
             border: none;
-            font-size: 20px;
+            font-size: 2.5vh; /* Размер текста зависит от высоты экрана */
             color: black;
             cursor: pointer;
-            user-select: none; /* Запрещает выделение текста на кнопке */
+            user-select: none;
+            border-radius: 10px;
         }
         #leftButton {
-            bottom: 10%;
-            left: 10%;
+            bottom: 5vh;
+            left: 5vw;
         }
         #rightButton {
-            bottom: 10%;
-            right: 10%;
+            bottom: 5vh;
+            right: 5vw;
         }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
-    <!-- Кнопки для управления -->
     <button id="leftButton" class="control-btn">Left</button>
     <button id="rightButton" class="control-btn">Right</button>
 
     <script src="game.js"></script>
 </body>
 </html>
- 
