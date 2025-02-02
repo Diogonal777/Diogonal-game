@@ -1,57 +1,27 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    user-select: none; /* Запрещает выделение текста */
-}
-
-/* Фон */
-body {
-    background: url('images/background.png') repeat-y center top;
-    background-size: cover;
-    margin: 0;
-    overflow: hidden;
-    height: 100vh; /* Обеспечивает правильное отображение на всех экранах */
-}
-
-/* Канвас */
-canvas {
-    display: block;
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-}
-
 /* Контейнер кнопок */
 #controls {
-    position: fixed; /* Фиксированное позиционирование */
-    bottom: 8vh; /* Отступ от низа экрана */
-    left: 50%; /* Центрируем по горизонтали */
-    transform: translateX(-50%); /* Центрирование */
+    position: absolute;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    justify-content: space-between; /* Равномерное распределение кнопок */
-    width: 70vw; /* Увеличил ширину контейнера */
-    z-index: 10; /* Ставим кнопки поверх других элементов */
-    gap: 10vw; /* Увеличиваем расстояние между кнопками */
+    gap: 3vw;
 }
 
 /* Кнопки управления */
-.control-btn {
-    width: 35vw; /* Сделал кнопки немного уже */
-    height: 12vh; /* Фиксированная высота кнопок */
-    background-color: rgba(255, 255, 255, 0.7);
+.control-button {
+    width: 15vw; /* 15% ширины экрана */
+    height: 7vh; /* 7% высоты экрана */
+    font-size: 2.5vh; /* Размер текста зависит от высоты экрана */
+    background: rgba(255, 255, 255, 0.7);
     border: none;
-    font-size: 2.5vh; /* Размер текста */
     color: black;
-    cursor: pointer;
-    user-select: none;
     border-radius: 10px;
     text-align: center;
-    line-height: 12vh; /* Центрируем текст по вертикали */
-}
-
-/* Убираем эффект приближения на мобильных устройствах */ 
-html, body {
-    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
  
