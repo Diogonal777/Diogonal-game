@@ -1,6 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
+    const menu = document.getElementById("menu");
+    const startButton = document.getElementById("startButton");
+
+    let gameStarted = false;
+    let gameOver = false;
+    let score = 0;
+    let highScore = localStorage.getItem("highScore") || 0;
+    let slowMotionFactor = 1;
 
     function resizeCanvas() {
         canvas.width = window.innerWidth;
@@ -8,12 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
-
-    let gameStarted = false;
-    let gameOver = false;
-    let score = 0;
-    let highScore = localStorage.getItem("highScore") || 0;
-    let slowMotionFactor = 1; 
 
     const shipImage = new Image();
     shipImage.src = "images/ship.png";
@@ -33,49 +35,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const meteors = [];
     function createMeteor() {
-        const size = (Math.random() * 0.05 + 0.05) * canvas.width; // Разный размер
+        const size = canvas.width * (0.05 + Math.random() * 0.06);
         meteors.push({
             x: Math.random() * (canvas.width - size),
             y: -size,
             width: size,
             height: size,
-            speed: (canvas.height * 0.005 + Math.random() * 2) * (1 + score / 100) // Ускорение со временем
+            speed: (canvas.height * 0.005 + Math.random() * 2) * (1 + score / 50)
         });
     }
 
-    setInterval(createMeteor, 1000);
-
-    document.getElementById("startButton").addEventListener("click", () => {
-        document.getElementById("menu").style.display = "none";
-        gameStarted = true;
-        gameLoop();
-    });
+    setInterval(() => {
+        if (gameStarted) createMeteor();
+    }, 1000);
 
     document.getElementById("leftButton").addEventListener("touchstart", () => ship.movingLeft = true);
     document.getElementById("leftButton").addEventListener("touchend", () => ship.movingLeft = false);
-    document.getElementById("leftButton").addEventListener("mousedown", () => ship.movingLeft = true);
-    document.getElementById("leftButton").addEventListener("mouseup", () => ship.movingLeft = false);
-
     document.getElementById("rightButton").addEventListener("touchstart", () => ship.movingRight = true);
     document.getElementById("rightButton").addEventListener("touchend", () => ship.movingRight = false);
+    document.getElementById("leftButton").addEventListener("mousedown", () => ship.movingLeft = true);
+    document.getElementById("leftButton").addEventListener("mouseup", () => ship.movingLeft = false);
     document.getElementById("rightButton").addEventListener("mousedown", () => ship.movingRight = true);
     document.getElementById("rightButton").addEventListener("mouseup", () => ship.movingRight = false);
 
-    startButton.addEventListener("click", startGame);
-    startButton.addEventListener("touchstart", startGame);
-    
     document.addEventListener("keydown", (e) => {
         if (e.key === "ArrowLeft") ship.movingLeft = true;
         if (e.key === "ArrowRight") ship.movingRight = true;
     });
-
     document.addEventListener("keyup", (e) => {
         if (e.key === "ArrowLeft") ship.movingLeft = false;
         if (e.key === "ArrowRight") ship.movingRight = false;
     });
 
     function update() {
-        if (!gameStarted || gameOver) return;
+        if (gameOver) {
+            slowMotionFactor = 0.2;
+        }
 
         if (ship.movingLeft && ship.x > 0) {
             ship.x -= ship.speed * slowMotionFactor;
@@ -122,8 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showGameOver() {
         gameOver = true;
-        slowMotionFactor = 0.2;
-
         let gameOverText = document.createElement("div");
         gameOverText.innerText = "GAME OVER\nTap to Restart";
         gameOverText.style.position = "absolute";
@@ -133,7 +126,9 @@ document.addEventListener("DOMContentLoaded", () => {
         gameOverText.style.fontSize = "5vw";
         gameOverText.style.color = "white";
         gameOverText.style.fontFamily = "Arial, sans-serif";
+        gameOverText.style.fontWeight = "bold";
         gameOverText.style.textAlign = "center";
+        gameOverText.style.textShadow = "2px 2px 5px black";
         document.body.appendChild(gameOverText);
 
         document.body.addEventListener("click", () => location.reload(), { once: true });
@@ -147,8 +142,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function gameLoop() {
-        update();
-        draw();
-        requestAnimationFrame(gameLoop);
+        if (gameStarted) {
+            update();
+            draw();
+            setTimeout(() => requestAnimationFrame(gameLoop), 1000 / 60 * slowMotionFactor);
+        }
     }
+
+    startButton.addEventListener("click", () => {
+        menu.style.display = "none";
+        gameStarted = true;
+        gameLoop();
+    });
+
+    startButton.addEventListener("touchstart", () => {
+        menu.style.display = "none";
+        gameStarted = true;
+        gameLoop();
+    });
 });
