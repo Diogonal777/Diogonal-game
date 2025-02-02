@@ -1,45 +1,56 @@
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+document.addEventListener("DOMContentLoaded", () => {
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
 
-// Устанавливаем размер канваса
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+    // Масштабирование под размер экрана
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
 
-// Переменные игры
-let shipWidth = canvas.width * 0.1; 
-let shipHeight = shipWidth * 1.5; // Делаем корабль выше, чтобы не сплющивался
-let shipX = (canvas.width - shipWidth) / 2;
-let shipY = canvas.height - shipHeight - 20;
-let shipSpeed = 0;
+    // Корабль
+    const ship = {
+        width: canvas.width * 0.1,  // 10% от ширины экрана
+        height: canvas.width * 0.1, // Делаем квадратным, чтобы не сплющивался
+        x: canvas.width / 2 - (canvas.width * 0.05),
+        y: canvas.height * 0.8,
+        speed: canvas.width * 0.005,
+        movingLeft: false,
+        movingRight: false
+    };
 
-// Управление кнопками
-document.getElementById("leftButton").addEventListener("touchstart", () => { shipSpeed = -5; });
-document.getElementById("rightButton").addEventListener("touchstart", () => { shipSpeed = 5; });
-document.getElementById("leftButton").addEventListener("touchend", () => { shipSpeed = 0; });
-document.getElementById("rightButton").addEventListener("touchend", () => { shipSpeed = 0; });
+    // Управление кнопками
+    document.getElementById("leftButton").addEventListener("touchstart", () => ship.movingLeft = true);
+    document.getElementById("leftButton").addEventListener("touchend", () => ship.movingLeft = false);
+    document.getElementById("rightButton").addEventListener("touchstart", () => ship.movingRight = true);
+    document.getElementById("rightButton").addEventListener("touchend", () => ship.movingRight = false);
 
-function update() {
-    shipX += shipSpeed;
-    if (shipX < 0) shipX = 0;
-    if (shipX + shipWidth > canvas.width) shipX = canvas.width - shipWidth;
-}
+    // Движение корабля
+    function update() {
+        if (ship.movingLeft && ship.x > 0) {
+            ship.x -= ship.speed;
+        }
+        if (ship.movingRight && ship.x + ship.width < canvas.width) {
+            ship.x += ship.speed;
+        }
+    }
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Рисуем корабль
-    ctx.fillStyle = "blue";
-    ctx.fillRect(shipX, shipY, shipWidth, shipHeight);
-}
+    // Отрисовка
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-function gameLoop() {
-    update();
-    draw();
-    requestAnimationFrame(gameLoop);
-}
+        // Корабль (красный квадрат)
+        ctx.fillStyle = "red";
+        ctx.fillRect(ship.x, ship.y, ship.width, ship.height);
+    }
 
-gameLoop();
+    function gameLoop() {
+        update();
+        draw();
+        requestAnimationFrame(gameLoop);
+    }
+    gameLoop();
+});
+ 
