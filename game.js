@@ -11,10 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Загрузка изображений
     const shipImage = new Image();
-    shipImage.src = "ship.png";  // Путь к изображению корабля
+    shipImage.src = "images/ship.png";  // Путь к изображению корабля
 
     const meteorImage = new Image();
-    meteorImage.src = "meteor.png";  // Путь к изображению метеорита
+    meteorImage.src = "images/meteor.png";  // Путь к изображению метеорита
 
     // Корабль
     const ship = {
