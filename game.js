@@ -73,40 +73,42 @@ document.getElementById("rightButton").addEventListener("mouseleave", () => ship
     document.getElementById("rightButton").addEventListener("touchend", () => ship.movingRight = false);
     
     function update() {
-    if (!gameOver) {
-        // Движение корабля
-        if (ship.movingLeft && ship.x > 0) {
-            ship.x -= ship.speed;
-        }
-        if (ship.movingRight && ship.x + ship.width < canvas.width) {
-            ship.x += ship.speed;
-        }
-
-        // Движение метеоритов
-        for (let i = 0; i < meteors.length; i++) {
-            meteors[i].y += meteors[i].speed;
-
-            // Проверка столкновения с кораблём
-            if (checkCollision(ship, meteors[i])) {
-                showGameOver();
-                return; // Прекращаем выполнение update() после проигрыша
-            }
-
-            // Удаляем метеориты, вышедшие за экран
-            if (meteors[i].y > canvas.height) {
-                meteors.splice(i, 1);
-                i--;
-            }
-        }
-
-        // Начисление очков (только если игра не окончена)
-        score++;
-    } else {
+    if (gameOver) {
         // Если игра окончена, замедляем метеориты
         for (let meteor of meteors) {
-            meteor.y += meteor.speed * 0.5; // Уменьшаем скорость в 10 раз
+            meteor.y += meteor.speed * 0.1; // Уменьшаем скорость в 10 раз
+        }
+        return; // Выходим из функции, чтобы очки не начислялись
+    }
+
+    // Движение корабля
+    if (ship.movingLeft && ship.x > 0) {
+        ship.x -= ship.speed;
+    }
+    if (ship.movingRight && ship.x + ship.width < canvas.width) {
+        ship.x += ship.speed;
+    }
+
+    // Движение метеоритов
+    for (let i = 0; i < meteors.length; i++) {
+        meteors[i].y += meteors[i].speed;
+
+        // Проверка столкновения с кораблём
+        if (checkCollision(ship, meteors[i])) {
+            showGameOver();
+            gameOver = true; // Устанавливаем флаг окончания игры
+            return; // Выходим из update(), чтобы прекратить начисление очков
+        }
+
+        // Удаляем метеориты, вышедшие за экран
+        if (meteors[i].y > canvas.height) {
+            meteors.splice(i, 1);
+            i--;
         }
     }
+
+    // Начисление очков (только если игра не окончена)
+    score++;
 }
 
     function draw() {
