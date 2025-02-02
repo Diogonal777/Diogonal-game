@@ -71,36 +71,43 @@ document.getElementById("rightButton").addEventListener("mouseleave", () => ship
     document.getElementById("leftButton").addEventListener("touchend", () => ship.movingLeft = false);
     document.getElementById("rightButton").addEventListener("touchstart", () => ship.movingRight = true);
     document.getElementById("rightButton").addEventListener("touchend", () => ship.movingRight = false);
-
+    
     function update() {
+    if (!gameOver) {
         // Движение корабля
         if (ship.movingLeft && ship.x > 0) {
-            ship.x -= ship.speed * gameSpeed;
+            ship.x -= ship.speed;
         }
         if (ship.movingRight && ship.x + ship.width < canvas.width) {
-            ship.x += ship.speed * gameSpeed;
+            ship.x += ship.speed;
         }
 
         // Движение метеоритов
         for (let i = 0; i < meteors.length; i++) {
-            meteors[i].y += meteors[i].speed * gameSpeed;
+            meteors[i].y += meteors[i].speed;
 
-            // Проверка столкновения
+            // Проверка столкновения с кораблём
             if (checkCollision(ship, meteors[i])) {
                 showGameOver();
+                return; // Прекращаем выполнение update() после проигрыша
             }
 
             // Удаляем метеориты, вышедшие за экран
             if (meteors[i].y > canvas.height) {
                 meteors.splice(i, 1);
                 i--;
-            if (!gameOver) {
-                 score++;
-            }
-                 score += 1; // Увеличиваем счёт
             }
         }
+
+        // Начисление очков (только если игра не окончена)
+        score++;
+    } else {
+        // Если игра окончена, замедляем метеориты
+        for (let meteor of meteors) {
+            meteor.y += meteor.speed * 0.5; // Уменьшаем скорость в 10 раз
+        }
     }
+}
 
     function draw() {
        ctx.clearRect(0, 0, canvas.width, canvas.height);
