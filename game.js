@@ -1,9 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    const menu = document.getElementById("menu");
     const startButton = document.getElementById("startButton");
 
+    // Проверка, если кнопка существует
+    if (!startButton) {
+        console.error("Кнопка не найдена!");
+        return;
+    }
+
+    const menu = document.getElementById("menu");
     let gameStarted = false;
     let gameOver = false;
     let score = 0;
@@ -15,17 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
+
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
-    // Загрузка изображений
     const shipImage = new Image();
     shipImage.src = "images/ship.png";
 
     const meteorImage = new Image();
     meteorImage.src = "images/meteor.png";
 
-    // Корабль
     const ship = {
         width: canvas.width * 0.12,
         height: (canvas.width * 0.12) * (3 / 4),
@@ -36,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
         movingRight: false
     };
 
-    // Метеориты
     const meteors = [];
     function createMeteor() {
         const size = canvas.width * (0.05 + Math.random() * 0.06); // Разный размер метеоритов
