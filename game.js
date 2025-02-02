@@ -87,9 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // Вызываем вместо alert
 showGameOver();
 
-                location.reload();
-            }
-
             // Удаляем метеориты, вышедшие за экран
             if (meteors[i].y > canvas.height) {
                 meteors.splice(i, 1);
