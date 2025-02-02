@@ -103,16 +103,16 @@ document.addEventListener("DOMContentLoaded", () => {
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        ctx.drawImage(shipImage, ship.x, ship.y, ship.width, ship.height);
-
-        ctx.fillStyle = "white";
-        ctx.font = "20px Arial";
-        ctx.fillText(`Score: ${score}`, 10, 30);
-        ctx.fillText(`High Score: ${highScore}`, 10, 60);
+        ctx.drawImage(shipImage, ship.x, ship.y, ship.width, ship.heigh);
         
         for (const meteor of meteors) {
             ctx.drawImage(meteorImage, meteor.x, meteor.y, meteor.width, meteor.height);
         }
+        
+        ctx.fillStyle = "white";
+        ctx.font = "20px Arial";
+        ctx.fillText(`Score: ${score}`, 10, 30);
+        ctx.fillText(`High Score: ${highScore}`, 10, 60);
     }
 
     function showGameOver() {
